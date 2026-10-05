@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ShopHub – Big Deals. Better Prices.</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip" href="#app">Skip to content</a>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="top">
+    <button id="burger" class="ib mob" data-act="menu" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    <a href="#/" class="logo" aria-label="ShopHub home"><span class="mark"><i class="fa-solid fa-bag-shopping"></i></span>Shop<b>Hub</b></a>
+    <a class="loc" href="#/service?t=Delivery"><i class="fa-solid fa-location-dot"></i><span><small>Deliver to</small>Pakistan</span></a>
+    <form id="sf" class="search" role="search" autocomplete="off">
+      <select id="scat" aria-label="Search category"></select>
+      <input id="sq" type="search" placeholder="Search ShopHub" aria-label="Search products">
+      <button type="button" id="sclr" hidden aria-label="Clear search"><i class="fa-solid fa-xmark"></i></button>
+      <button class="sbtn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <div id="suggest" class="suggest" hidden></div>
+    </form>
+    <select id="lang" class="lang" aria-label="Language"><option>EN</option><option>اردو</option><option>العربية</option></select>
+    <a id="acct" href="#/login" class="hl"><small>Hello, sign in</small>Account &amp; Lists</a>
+    <a href="#/account?tab=orders" class="hl hl-o"><small>Returns</small>&amp; Orders</a>
+    <a href="#/cart" class="cartlink" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i><span id="cc">0</span><em>Cart</em></a>
+  </div>
+  <nav class="nav" aria-label="Main">
+    <button data-act="menu"><i class="fa-solid fa-bars"></i> All</button>
+    <a href="#/products?deals=1">Today's Deals</a>
+    <a href="#/service">Customer Service</a>
+    <a href="#/service?t=Registry">Registry</a>
+    <a href="#/service?t=Gift%20Cards">Gift Cards</a>
+    <a href="#/service?t=Sell">Sell</a>
+  </nav>
+</header>
+
+<!-- SIDE MENU -->
+<div id="scrim" data-act="menu" hidden></div>
+<aside id="side" aria-label="Categories" aria-hidden="true">
+  <div class="side-h"><span id="sideUser">Hello, sign in</span><button class="ib" data-act="menu" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button></div>
+  <div id="sideList"></div>
+</aside>
+
+<main id="app" tabindex="-1"></main>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <a href="#" class="totop" onclick="scrollTo({top:0,behavior:'smooth'});return false">Back to top</a>
+  <div class="fcols">
+    <div><h4>Get to Know Us</h4><a href="#/service?t=About%20ShopHub">About ShopHub</a><a href="#/service?t=Careers">Careers</a><a href="#/service?t=Press%20Releases">Press Releases</a><a href="#/service?t=ShopHub%20Science">ShopHub Science</a></div>
+    <div><h4>Make Money with Us</h4><a href="#/service?t=Sell">Sell on ShopHub</a><a href="#/service?t=Affiliate%20Program">Affiliate Program</a><a href="#/service?t=Advertise%20Products">Advertise Products</a><a href="#/service?t=Become%20a%20Supplier">Become a Supplier</a></div>
+    <div><h4>Customer Service</h4><a href="#/service?t=Help%20Center">Help Center</a><a href="#/service?t=Contact%20Us">Contact Us</a><a href="#/service?t=Returns">Returns</a><a href="#/service?t=Shipping%20Information">Shipping Information</a></div>
+    <div><h4>Account</h4><a href="#/account">Your Account</a><a href="#/account?tab=orders">Your Orders</a><a href="#/wishlist">Wishlist</a><a href="#/account?tab=settings">Settings</a></div>
+  </div>
+  <div class="fbot">
+    <a href="#/" class="logo"><span class="mark"><i class="fa-solid fa-bag-shopping"></i></span>Shop<b>Hub</b></a>
+    <select aria-label="Language"><option>English</option><option>اردو</option></select>
+    <select aria-label="Country"><option>Pakistan</option><option>United States</option><option>United Kingdom</option><option>UAE</option></select>
+  </div>
+  <p class="copy">© 2026 ShopHub. All rights reserved.</p>
+</footer>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="bnav" aria-label="Mobile">
+  <a href="#/"><i class="fa-solid fa-house"></i>Home</a>
+  <button data-act="menu"><i class="fa-solid fa-table-cells-large"></i>Menu</button>
+  <a href="#/wishlist"><i class="fa-solid fa-heart"></i>Wishlist</a>
+  <a href="#/cart"><i class="fa-solid fa-cart-shopping"></i>Cart</a>
+  <a href="#/account"><i class="fa-solid fa-user"></i>Account</a>
+</nav>
+
+<div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-label="Quick view"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
