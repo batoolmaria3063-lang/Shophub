@@ -5,7 +5,224 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ShopHub – Big Deals. Better Prices.</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="css/style.css">
+<style>
+/* ShopHub styles – navy + orange marketplace theme */
+:root{--navy:#131a22;--navy2:#232f3e;--or:#ff9900;--or2:#e47911;--bg:#f3f4f6;--tx:#111827;--mut:#5b6472;--line:#e5e7eb;--r:12px;--sh:0 8px 24px rgba(0,0,0,.12)}
+*{box-sizing:border-box}
+html,body{margin:0;overflow-x:hidden}
+body{font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tx);background:var(--bg)}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+button,select,input,textarea{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--or);outline-offset:2px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:8px;z-index:99}
+.wrap{max-width:1400px;margin:0 auto;padding:0 16px}
+h1,h2,h3{line-height:1.25;margin:0}
+.mob{display:none}
+
+/* Header */
+.hdr{position:sticky;top:0;z-index:50}
+.top{background:var(--navy);color:#fff;display:flex;align-items:center;gap:14px;padding:8px 16px}
+.logo{font-size:24px;font-weight:700;display:flex;align-items:center;gap:6px;color:#fff;white-space:nowrap}
+.logo b{color:var(--or)}
+.mark{background:var(--or);color:var(--navy);width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-size:16px}
+.loc{display:flex;gap:6px;align-items:center;font-weight:600;white-space:nowrap}
+.loc small,.hl small{display:block;color:#cbd5e1;font-weight:400;font-size:11px}
+.search{flex:1;display:flex;position:relative;min-width:0;border-radius:10px;background:#fff}
+.search select{border:0;background:#e5e7eb;border-radius:10px 0 0 10px;padding:0 8px;max-width:120px}
+.search input{flex:1;min-width:0;border:0;padding:11px 12px;outline:0}
+.search input::-webkit-search-cancel-button{display:none}
+.search button{border:0;background:none;color:var(--mut);padding:0 10px}
+.search .sbtn{background:var(--or);color:var(--navy);border-radius:0 10px 10px 0;width:48px;font-size:16px}
+.search .sbtn:hover{background:var(--or2)}
+.suggest{position:absolute;top:100%;left:0;right:0;background:#fff;color:var(--tx);border-radius:0 0 10px 10px;box-shadow:var(--sh);overflow:hidden;z-index:60}
+.suggest a{display:flex;gap:8px;align-items:center;padding:9px 14px}
+.suggest a:hover{background:#f3f4f6}.suggest h6{margin:0;padding:8px 14px;color:var(--mut);font-size:12px;text-transform:uppercase}
+.lang{background:transparent;color:#fff;border:1px solid #475569;border-radius:6px;padding:4px}
+.lang option{color:#000}
+.hl{white-space:nowrap;font-weight:600;padding:4px 6px;border-radius:6px}
+.hl:hover,.loc:hover{outline:1px solid #94a3b8}
+.cartlink{position:relative;display:flex;align-items:center;gap:6px;font-size:22px;padding:4px 6px}
+.cartlink em{font-style:normal;font-size:14px;font-weight:700}
+#cc{position:absolute;top:-6px;right:-4px;background:var(--or);color:var(--navy);font-size:12px;font-weight:700;border-radius:99px;min-width:20px;text-align:center;padding:0 5px}
+.nav{background:var(--navy2);display:flex;gap:4px;padding:0 16px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.nav a,.nav button{color:#fff;background:none;border:0;padding:9px 12px;font-weight:500}
+.nav a:hover,.nav button:hover{background:rgba(255,255,255,.12)}
+.ib{background:none;border:0;color:inherit;font-size:20px;padding:6px}
+
+/* Side menu */
+#scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:70}
+#side{position:fixed;top:0;left:0;bottom:0;width:340px;max-width:88vw;background:#fff;z-index:80;transform:translateX(-100%);transition:transform .3s;overflow-y:auto}
+#side.open{transform:none}
+.side-h{background:var(--navy2);color:#fff;padding:16px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.mi>button{width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:14px 18px;display:flex;justify-content:space-between;font-weight:600}
+.mi>button:hover{background:#f3f4f6}
+.sub{display:none;background:#f9fafb}.mi.open .sub{display:block}
+.sub a{display:block;padding:10px 32px}.sub a:hover{color:var(--or2)}
+
+/* Hero */
+.hero{position:relative;height:380px;overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;align-items:center;padding:0 8%;color:#fff;opacity:0;transition:opacity .6s;}
+.hemo{position:absolute;right:10%;top:50%;transform:translateY(-50%);font-size:clamp(110px,22vw,260px);opacity:.9;filter:drop-shadow(0 12px 24px rgba(0,0,0,.35))}
+.htxt{position:relative;z-index:1;max-width:60%}
+.slide.on{opacity:1;z-index:1}
+.slide h1{font-size:clamp(28px,5vw,54px)}.slide h3{font-size:clamp(16px,2.4vw,26px);font-weight:500;margin:8px 0 4px}
+.slide p{margin:0 0 20px;font-size:18px;opacity:.9}
+.hbtn{position:absolute;top:50%;transform:translateY(-50%);z-index:3;background:rgba(255,255,255,.85);border:0;width:42px;height:60px;font-size:18px;border-radius:8px}
+.hbtn:hover{background:#fff}.hprev{left:10px}.hnext{right:10px}
+.dots{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:8px;z-index:3}
+.dots button{width:11px;height:11px;border-radius:50%;border:0;background:rgba(255,255,255,.5);padding:0}
+.dots button.on{background:var(--or);width:28px;border-radius:99px}
+
+/* Buttons */
+.btn{background:var(--or);color:var(--navy);border:0;border-radius:99px;padding:9px 18px;font-weight:600;transition:.2s;display:inline-block;text-align:center}
+.btn:hover{background:var(--or2);transform:translateY(-1px)}
+.btn.dark{background:var(--navy2);color:#fff}.btn.dark:hover{background:#000}
+.btn.ghost{background:#fff;border:1px solid #cbd5e1}.btn.ghost:hover{background:#f3f4f6}
+.btn.big{padding:13px 26px;font-size:16px}.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* Sections */
+.sec{padding-top:28px}.sec>h2,.sec-h h2{font-size:22px;margin-bottom:14px}
+.sec-h{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.cat{background:#fff;border-radius:var(--r);padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.08);transition:.25s}
+.cat:hover{box-shadow:var(--sh);transform:translateY(-4px)}
+.cat img{border-radius:10px;margin-bottom:10px;aspect-ratio:1.6;object-fit:cover;width:100%}
+.cat span{color:#0b66c3;font-size:13px}
+.timer{background:var(--navy2);color:#fff;border-radius:8px;padding:6px 14px;font-weight:600}
+.timer b{color:var(--or);font-variant-numeric:tabular-nums}
+.hrow{display:flex;gap:16px;overflow-x:auto;padding:4px 2px 14px;scroll-snap-type:x mandatory}
+.hrow .card{flex:0 0 240px;scroll-snap-align:start}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.promo{margin-top:28px;border-radius:var(--r);padding:44px 6%;color:#fff;background:linear-gradient(90deg,#131a22,#2b3a4f 60%,#ff9900);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.promo h2{font-size:clamp(22px,3.5vw,36px)}
+
+/* Product card */
+.card{background:#fff;border-radius:var(--r);box-shadow:0 1px 3px rgba(0,0,0,.08);position:relative;display:flex;flex-direction:column;overflow:hidden;transition:.25s}
+.card:hover{box-shadow:var(--sh);transform:translateY(-3px)}
+.card .img{display:block;overflow:hidden;position:relative}
+.card .img img{aspect-ratio:1;object-fit:cover;width:100%;transition:transform .4s}
+.card:hover .img img{transform:scale(1.08)}
+.badge{position:absolute;top:10px;left:10px;background:#c7511f;color:#fff;font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px}
+.heart{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;border:0;background:#fff;color:#cbd5e1;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.heart.on,.heart:hover{color:#e11d48}
+.qv{position:absolute;left:50%;top:38%;transform:translate(-50%,10px);opacity:0;background:rgba(19,26,34,.9);color:#fff;border:0;border-radius:99px;padding:8px 16px;transition:.25s}
+.card:hover .qv,.qv:focus{opacity:1;transform:translate(-50%,0)}
+.body{padding:12px;display:flex;flex-direction:column;gap:5px;flex:1}
+.title{font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:42px}
+.title:hover{color:var(--or2)}
+.stars{color:#f59e0b;font-size:12px}.body small{color:#0b66c3}
+.price b{font-size:20px}.price s{color:var(--mut);margin-left:6px}
+.fast{color:#0e7a4b;font-size:12px;font-weight:600}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:auto;padding-top:6px}
+.btns .btn{padding:8px 4px;font-size:13px}
+
+/* Listing */
+.lay{display:grid;grid-template-columns:250px 1fr;gap:20px;padding:20px 16px}
+.filters{background:#fff;border-radius:var(--r);padding:16px;align-self:start;position:sticky;top:110px}
+.filters h4{margin:14px 0 6px}.filters h4:first-child{margin-top:0}
+.filters label{display:flex;gap:8px;align-items:center;padding:3px 0;cursor:pointer}
+.ftog{display:none}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.bar select{padding:7px;border-radius:8px;border:1px solid #cbd5e1}
+.empty{text-align:center;background:#fff;border-radius:var(--r);padding:50px 16px}
+.empty i{font-size:48px;color:#cbd5e1;margin-bottom:10px}
+
+/* Product page */
+.pd{display:grid;grid-template-columns:1fr 1fr;gap:30px;background:#fff;border-radius:var(--r);padding:24px;margin:20px 0}
+.zoom{overflow:hidden;border-radius:var(--r);cursor:zoom-in}
+.zoom img{width:100%;transition:transform .2s}.zoom:hover img{transform:scale(2)}
+.thumbs{display:flex;gap:10px;margin-top:10px}
+.thumbs button{border:2px solid transparent;padding:0;border-radius:8px;overflow:hidden;width:70px}
+.thumbs button.on{border-color:var(--or)}
+.pd h1{font-size:26px}.pd .pr{font-size:30px;color:#b12704;margin:8px 0}
+.opt{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+.opt label{border:1px solid #cbd5e1;border-radius:8px;padding:5px 14px;cursor:pointer}
+.opt input{position:absolute;opacity:0}.opt label:has(input:checked){border-color:var(--or);background:#fff7e6;font-weight:600}
+.opt label:has(input:focus-visible){outline:3px solid var(--or)}
+.in{color:#0e7a4b;font-weight:600}.out{color:#b12704;font-weight:600}
+.qty{display:inline-flex;align-items:center;border:1px solid #cbd5e1;border-radius:99px;overflow:hidden}
+.qty button{border:0;background:#f3f4f6;width:32px;height:32px}.qty span,.qty input{width:44px;text-align:center;border:0;font-weight:600}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.tabs{background:#fff;border-radius:var(--r);margin-bottom:20px}
+.tabh{display:flex;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabh button{background:none;border:0;border-bottom:3px solid transparent;padding:14px 20px;font-weight:600;white-space:nowrap}
+.tabh button.on{border-color:var(--or)}
+.tabc{padding:20px}.tabc table{border-collapse:collapse;width:100%;max-width:600px}.tabc td{padding:8px;border-bottom:1px solid var(--line)}.tabc td:first-child{font-weight:600;width:40%}
+
+/* Cart / checkout / account */
+.two{display:grid;grid-template-columns:1fr 340px;gap:20px;padding:20px 16px;align-items:start}
+.box{background:#fff;border-radius:var(--r);padding:20px}
+.crow{display:grid;grid-template-columns:100px 1fr auto;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.crow img{border-radius:8px}.crow .lnk{background:none;border:0;color:#0b66c3;padding:0 10px 0 0}.crow .lnk:hover{text-decoration:underline}
+.sum div{display:flex;justify-content:space-between;padding:5px 0}.sum .tot{font-size:18px;font-weight:700;border-top:1px solid var(--line);margin-top:6px;padding-top:10px}
+.steps{display:flex;gap:6px;margin-bottom:20px}
+.steps span{flex:1;text-align:center;padding:8px 2px;border-bottom:4px solid var(--line);color:var(--mut);font-size:13px}
+.steps span.on{border-color:var(--or);color:var(--tx);font-weight:700}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fg .full{grid-column:1/-1}
+.f label{display:block;font-weight:600;margin-bottom:3px}
+.f input,.f select,.f textarea{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px}
+.f input:invalid:not(:placeholder-shown){border-color:#e11d48}
+.opts label{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer}
+.opts label:has(input:checked){border-color:var(--or);background:#fff7e6}
+.auth{max-width:420px;margin:30px auto}.auth h1{font-size:26px;margin-bottom:14px}.auth .f{margin-bottom:12px}
+.err{color:#b12704;font-size:13px;min-height:18px}
+.ok{text-align:center;padding:30px}.ok i{font-size:60px;color:#16a34a}
+.acc{display:grid;grid-template-columns:230px 1fr;gap:20px;padding:20px 16px}
+.acc nav a{display:block;padding:11px 14px;border-radius:8px;font-weight:500}
+.acc nav a.on,.acc nav a:hover{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.ord{border:1px solid var(--line);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.ord header{background:#f3f4f6;padding:10px 14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ord .ln{padding:12px 14px;display:flex;gap:12px;align-items:center}.ord img{width:56px;border-radius:6px}
+.st{padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700}
+.st.Processing{background:#fef3c7;color:#92400e}.st.Shipped{background:#dbeafe;color:#1e40af}.st.Delivered{background:#dcfce7;color:#166534}.st.Cancelled{background:#fee2e2;color:#991b1b}
+.svc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.svc a{background:#fff;border-radius:var(--r);padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.08);transition:.2s}.svc a:hover{box-shadow:var(--sh)}.svc i{font-size:26px;color:var(--or2);margin-bottom:8px}
+
+/* Footer */
+.foot{background:var(--navy2);color:#d1d5db;margin-top:40px}
+.totop{display:block;background:#37475a;color:#fff;text-align:center;padding:14px}.totop:hover{background:#485769}
+.fcols{max-width:1100px;margin:0 auto;padding:36px 16px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.fcols h4{color:#fff;margin:0 0 10px}.fcols a{display:block;padding:3px 0;font-size:13px}.fcols a:hover{text-decoration:underline;color:#fff}
+.fbot{border-top:1px solid #475569;padding:20px 16px;display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap}
+.fbot select{background:var(--navy);color:#fff;border:1px solid #475569;border-radius:6px;padding:6px}
+.copy{text-align:center;margin:0;padding:0 16px 24px;font-size:13px}
+
+/* Modal, toast, mobile nav */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:90;display:grid;place-items:center;padding:16px}.modal[hidden]{display:none}
+.modal>div{background:#fff;border-radius:var(--r);max-width:760px;width:100%;max-height:90vh;overflow:auto;padding:22px;display:grid;grid-template-columns:1fr 1fr;gap:20px;position:relative}
+.modal .x{position:absolute;top:8px;right:8px}
+.toast{position:fixed;left:50%;bottom:80px;transform:translate(-50%,30px);background:#111827;color:#fff;padding:12px 22px;border-radius:99px;opacity:0;pointer-events:none;transition:.3s;z-index:100;max-width:90vw}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.bnav{display:none}
+[hidden]{display:none!important}
+
+/* Tablet */
+@media(max-width:1024px){
+  .cats{grid-template-columns:repeat(2,1fr)}.hl-o,.loc,.lang{display:none}
+  .lay{grid-template-columns:210px 1fr}.fcols{grid-template-columns:repeat(2,1fr)}
+  .two,.acc{grid-template-columns:1fr}.pd{grid-template-columns:1fr}
+}
+/* Mobile */
+@media(max-width:768px){
+  body{padding-bottom:60px}.mob{display:block}.nav{display:none}
+  .top{flex-wrap:wrap;gap:8px}.logo{font-size:21px}.hl{display:none}.cartlink em{display:none}.cartlink{margin-left:auto}
+  .search{order:5;flex-basis:100%}.search select{max-width:80px}
+  .hero{height:300px}.hbtn{display:none}
+  .lay{grid-template-columns:1fr;padding:12px}.ftog{display:block;margin-bottom:12px;width:100%}
+  .filters{display:none;position:static}.filters.show{display:block;margin-bottom:12px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:10px}.hrow .card{flex-basis:170px}
+  .btns{grid-template-columns:1fr}.qv{display:none}.cats{gap:10px}
+  .crow{grid-template-columns:70px 1fr}.crow>:last-child{grid-column:1/-1}
+  .fg{grid-template-columns:1fr}.modal>div{grid-template-columns:1fr}
+  .bnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);z-index:60}
+  .bnav a,.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;font-size:11px;padding:8px 0;background:none;border:0;color:var(--mut)}
+  .bnav i{font-size:18px;margin-bottom:2px}
+  .fcols{grid-template-columns:1fr 1fr;gap:16px}.pd{padding:14px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+</style>
 </head>
 <body>
 <a class="skip" href="#app">Skip to content</a>
@@ -76,7 +293,501 @@
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-label="Quick view"></div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-<script src="js/data.js"></script>
-<script src="js/app.js"></script>
+<script>
+/* ShopHub product data – kept separate from UI logic. */
+
+// Generates an inline SVG placeholder image (no external requests needed)
+function svgImg(emoji, hue = 30, w = 600) {
+  const s = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${w}" viewBox="0 0 200 200"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(${hue},70%,92%)"/><stop offset="1" stop-color="hsl(${hue + 30},60%,80%)"/></linearGradient></defs><rect width="200" height="200" fill="url(#g)"/><text x="100" y="125" font-size="90" text-anchor="middle">${emoji}</text></svg>`;
+  return 'data:image/svg+xml,' + encodeURIComponent(s);
+}
+
+const CATS = [
+  { name: 'Electronics', emoji: '🎧', hue: 215 }, { name: 'Fashion', emoji: '👟', hue: 340 },
+  { name: 'Home & Kitchen', emoji: '🍳', hue: 30 }, { name: 'Beauty', emoji: '💄', hue: 310 },
+  { name: 'Mobile Phones', emoji: '📱', hue: 170 }, { name: 'Computers', emoji: '💻', hue: 250 },
+  { name: 'Sports', emoji: '⚽', hue: 120 }, { name: 'Books', emoji: '📚', hue: 45 }
+];
+
+// name, category, brand, price, oldPrice, rating, reviews, emoji
+const RAW = [
+  ['Wireless Noise-Cancelling Headphones', 'Electronics', 'Sony', 129.99, 249.99, 4.7, 12450, '🎧'],
+  ['Fitness Smart Watch', 'Electronics', 'Apple', 199, 299, 4.6, 8210, '⌚'],
+  ['Portable Bluetooth Speaker', 'Electronics', 'Sony', 49.99, 79.99, 4.5, 5320, '🔊'],
+  ['43" 4K Smart TV', 'Electronics', 'Samsung', 329, 499, 4.4, 3987, '📺'],
+  ['True Wireless Earbuds', 'Electronics', 'Samsung', 59, 99, 4.3, 9120, '🎵'],
+  ['20000mAh Power Bank', 'Electronics', 'ShopHub', 24.99, 39.99, 4.5, 2210, '🔋'],
+  ['Smartphone Pro 128GB', 'Mobile Phones', 'Apple', 799, 899, 4.8, 20112, '📱'],
+  ['5G Smartphone 256GB', 'Mobile Phones', 'Samsung', 599, 799, 4.6, 11876, '📲'],
+  ['ShopHub Lite Phone 64GB', 'Mobile Phones', 'ShopHub', 149, 199, 4.1, 1980, '📱'],
+  ['Phone Case & Fast Charger Bundle', 'Mobile Phones', 'ShopHub', 19.99, 34.99, 4.2, 4410, '🔌'],
+  ['15.6" Everyday Laptop', 'Computers', 'HP', 549, 749, 4.4, 6540, '💻'],
+  ['14" Ultra-Slim Laptop', 'Computers', 'Dell', 699, 899, 4.5, 4120, '🖥️'],
+  ['10.9" Tablet 64GB', 'Computers', 'Apple', 449, 549, 4.7, 7733, '📟'],
+  ['Wireless Ergonomic Mouse', 'Computers', 'HP', 19.99, 29.99, 4.4, 15220, '🖱️'],
+  ['Mechanical Gaming Keyboard', 'Computers', 'Dell', 49.99, 79.99, 4.5, 6050, '⌨️'],
+  ['27" Full HD Monitor', 'Computers', 'Dell', 179, 249, 4.6, 5301, '🖥️'],
+  ['Men\'s Running Shoes', 'Fashion', 'Nike', 69.99, 119.99, 4.6, 18400, '👟'],
+  ['Comfort Fleece Hoodie', 'Fashion', 'Adidas', 39.99, 64.99, 4.4, 7210, '🧥'],
+  ['Classic Denim Jacket', 'Fashion', 'ShopHub', 49, 89, 4.3, 2890, '🧥'],
+  ['Leather Travel Backpack', 'Fashion', 'ShopHub', 59, 99, 4.5, 3640, '🎒'],
+  ['5L Digital Air Fryer', 'Home & Kitchen', 'ShopHub', 69.99, 129.99, 4.6, 22100, '🍟'],
+  ['Programmable Coffee Maker', 'Home & Kitchen', 'ShopHub', 44.99, 79.99, 4.4, 8420, '☕'],
+  ['10-Piece Non-Stick Cookware Set', 'Home & Kitchen', 'ShopHub', 79, 149, 4.5, 6130, '🍳'],
+  ['Smart Robot Vacuum', 'Home & Kitchen', 'Samsung', 199, 349, 4.3, 4980, '🤖'],
+  ['Vitamin C Brightening Serum', 'Beauty', 'ShopHub', 14.99, 24.99, 4.5, 13200, '🧴'],
+  ['Ionic Hair Dryer', 'Beauty', 'ShopHub', 34.99, 59.99, 4.4, 5870, '💇'],
+  ['Luxury Perfume Gift Set', 'Beauty', 'ShopHub', 39, 69, 4.2, 2310, '🌸'],
+  ['Non-Slip Yoga Mat', 'Sports', 'Nike', 24.99, 39.99, 4.6, 9340, '🧘'],
+  ['Adjustable Dumbbell Set', 'Sports', 'ShopHub', 89, 149, 4.7, 4210, '🏋️'],
+  ['Match Training Football', 'Sports', 'Adidas', 19.99, 29.99, 4.5, 3120, '⚽'],
+  ['The Midnight Library – Bestselling Novel', 'Books', 'ShopHub', 9.99, 17.99, 4.7, 31500, '📖'],
+  ['Clean Code Programming Handbook', 'Books', 'ShopHub', 29.99, 49.99, 4.8, 8900, '📘'],
+  ['Kids Illustrated Story Collection', 'Books', 'ShopHub', 12.99, 19.99, 4.6, 2760, '📚']
+];
+
+const PRODUCTS = RAW.map((r, i) => {
+  const [name, category, brand, price, oldPrice, rating, reviews, emoji] = r;
+  const discount = Math.round(100 - (price / oldPrice) * 100);
+  const hue = (CATS.find(c => c.name === category)?.hue || 30) + (i % 5) * 6;
+  return {
+    id: i + 1, name, category, brand, price, oldPrice, discount, rating, reviews, emoji,
+    description: `${name} by ${brand}. Premium quality, reliable performance and great value – backed by the ShopHub 30-day return guarantee.`,
+    image: svgImg(emoji, hue),
+    gallery: [0, 40, 80, 120].map((d, k) => svgImg(k === 0 ? emoji : emoji, hue + d)),
+    stock: i % 9 === 4 ? 0 : 5 + ((i * 7) % 40),
+    colors: ['Fashion', 'Electronics', 'Mobile Phones'].includes(category) ? ['Black', 'Silver', 'Blue'] : [],
+    sizes: category === 'Fashion' ? ['S', 'M', 'L', 'XL'] : [],
+    badge: i % 4 === 0 ? 'Best Seller' : i % 5 === 0 ? 'New' : discount + '% OFF'
+  };
+});
+
+// Side-menu structure with sub-categories
+const MENU = {
+  'Electronics': ['Headphones', 'Speakers', 'Smart Watch', 'TV'],
+  'Computers': ['Laptop', 'Monitor', 'Keyboard', 'Tablet'],
+  'Mobile Phones': ['Smartphone', 'Chargers', 'Cases'],
+  'Fashion': ['Shoes', 'Jacket', 'Backpack'],
+  'Beauty': ['Skincare', 'Hair', 'Perfume'],
+  'Home & Kitchen': ['Cookware', 'Appliances', 'Vacuum'],
+  'Grocery': ['Snacks', 'Beverages'],
+  'Sports': ['Fitness', 'Football', 'Yoga'],
+  'Books': ['Novel', 'Programming', 'Kids'],
+  'Toys': ['Puzzles', 'Dolls'],
+  'Automotive': ['Car Care', 'Accessories']
+};
+
+</script>
+<script>
+/* ShopHub app – hash-routed SPA. Data lives in data.js. */
+'use strict';
+
+/* ---------- Helpers & state ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const store = {
+  get: (k, d) => { try { return JSON.parse(localStorage.getItem('sh_' + k)) ?? d; } catch { return d; } },
+  set: (k, v) => { try { localStorage.setItem('sh_' + k, JSON.stringify(v)); } catch { /* storage full/blocked */ } }
+};
+let cart = store.get('cart', []), wish = store.get('wish', []), user = store.get('user', null);
+let orders = store.get('orders', []), recent = store.get('recent', []), searches = store.get('searches', []);
+const app = $('#app');
+const money = n => '$' + n.toFixed(2);
+const byId = id => PRODUCTS.find(p => p.id === +id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const stars = r => `<span class="stars" aria-label="${r} out of 5 stars">${[1, 2, 3, 4, 5].map(i =>
+  `<i class="${r >= i ? 'fa-solid fa-star' : r >= i - .5 ? 'fa-solid fa-star-half-stroke' : 'fa-regular fa-star'}"></i>`).join('')}</span>`;
+
+let toastT;
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ---------- Reusable templates ---------- */
+const card = p => `<article class="card">
+  <a class="img" href="#/product/${p.id}"><img src="${p.image}" alt="${esc(p.name)}" loading="lazy"><span class="badge">${p.badge}</span></a>
+  <button class="heart ${wish.includes(p.id) ? 'on' : ''}" data-act="wish" data-id="${p.id}" aria-label="Toggle wishlist"><i class="fa-solid fa-heart"></i></button>
+  <button class="qv" data-act="qv" data-id="${p.id}">Quick view</button>
+  <div class="body">
+    <a href="#/product/${p.id}" class="title">${esc(p.name)}</a>
+    <div>${stars(p.rating)} <small>(${p.reviews.toLocaleString()})</small></div>
+    <div class="price"><b>${money(p.price)}</b><s>${money(p.oldPrice)}</s></div>
+    <div class="fast"><i class="fa-solid fa-truck-fast"></i> Fast Delivery</div>
+    <div class="btns"><button class="btn" data-act="add" data-id="${p.id}" ${p.stock ? '' : 'disabled'}>Add to Cart</button><button class="btn dark" data-act="buy" data-id="${p.id}" ${p.stock ? '' : 'disabled'}>Buy Now</button></div>
+  </div></article>`;
+const grid = list => list.length ? `<div class="grid">${list.map(card).join('')}</div>`
+  : `<div class="empty"><i class="fa-solid fa-magnifying-glass"></i><h2>No products found.</h2><p>Try another search.</p><a class="btn" href="#/products">Browse all products</a></div>`;
+const section = (title, inner, extra = '') => `<section class="wrap sec"><div class="sec-h"><h2>${title}</h2>${extra}</div>${inner}</section>`;
+const emptyBox = (icon, title, sub, link = '') => `<div class="empty wrap" style="margin:20px auto"><i class="fa-solid ${icon}"></i><h2>${title}</h2><p>${sub}</p>${link}</div>`;
+
+/* ---------- Header / side menu ---------- */
+function refresh() {
+  $('#cc').textContent = cart.reduce((s, i) => s + i.qty, 0);
+  const name = user ? user.name.split(' ')[0] : 'sign in';
+  $('#acct').innerHTML = `<small>Hello, ${esc(name)}</small>Account &amp; Lists`;
+  $('#acct').href = user ? '#/account' : '#/login';
+  $('#sideUser').textContent = 'Hello, ' + name;
+}
+function buildSide() {
+  $('#sideList').innerHTML = Object.entries(MENU).map(([c, subs]) => `<div class="mi">
+    <button data-act="sub" aria-expanded="false">${c}<i class="fa-solid fa-chevron-down"></i></button>
+    <div class="sub"><a href="#/products?cat=${encodeURIComponent(c)}"><b>All ${c}</b></a>${subs.map(s => `<a href="#/products?q=${encodeURIComponent(s)}">${s}</a>`).join('')}</div></div>`).join('');
+  $('#scat').innerHTML = '<option value="">All</option>' + CATS.map(c => `<option>${c.name}</option>`).join('');
+}
+function toggleMenu(force) {
+  const open = force ?? !$('#side').classList.contains('open');
+  $('#side').classList.toggle('open', open); $('#scrim').hidden = !open;
+  $('#side').setAttribute('aria-hidden', !open);
+}
+
+/* ---------- Cart logic ---------- */
+const saveCart = () => { store.set('cart', cart); refresh(); };
+function addCart(id, qty = 1, silent) {
+  const p = byId(id); if (!p || !p.stock) return toast('Out of stock');
+  const it = cart.find(i => i.id === p.id);
+  if (it) it.qty = Math.min(p.stock, it.qty + qty); else cart.push({ id: p.id, qty });
+  saveCart(); if (!silent) toast('Product added to cart!');
+}
+function toggleWish(id) {
+  const i = wish.indexOf(id);
+  i > -1 ? wish.splice(i, 1) : wish.push(id);
+  store.set('wish', wish); toast(i > -1 ? 'Removed from wishlist' : 'Added to wishlist!');
+  $$(`.heart[data-id="${id}"]`).forEach(b => b.classList.toggle('on', i === -1));
+  if (location.hash.startsWith('#/wishlist')) wishlist();
+}
+function totals(express = false) {
+  const sub = cart.reduce((s, i) => s + byId(i.id).price * i.qty, 0);
+  const save = cart.reduce((s, i) => s + (byId(i.id).oldPrice - byId(i.id).price) * i.qty, 0);
+  const del = !sub ? 0 : (sub >= 50 ? 0 : 4.99) + (express ? 9.99 : 0);
+  const tax = sub * .08;
+  return { sub, save, del, tax, total: sub + del + tax };
+}
+const summary = (t, btn) => `<aside class="box sum" aria-label="Order summary"><h3>Order Summary</h3>
+  <div><span>Subtotal</span><span>${money(t.sub)}</span></div><div><span>Delivery</span><span>${t.del ? money(t.del) : 'FREE'}</span></div>
+  <div><span>Discount (applied)</span><span>-${money(t.save)}</span></div><div><span>Tax (8%)</span><span>${money(t.tax)}</span></div>
+  <div class="tot"><span>Total</span><span>${money(t.total)}</span></div>${btn}</aside>`;
+
+/* ---------- Router ---------- */
+const routes = { '/': home, '/products': products, '/cart': cartPage, '/checkout': checkout, '/login': () => auth('login'), '/signup': () => auth('signup'), '/account': account, '/wishlist': wishlist, '/service': service };
+function route() {
+  const [path, qs] = (location.hash.slice(1) || '/').split('?');
+  const q = new URLSearchParams(qs || '');
+  toggleMenu(false); clearInterval(heroT);
+  const m = path.match(/^\/product\/(\d+)$/);
+  m && byId(m[1]) ? productPage(byId(m[1])) : (routes[path] || home)(q);
+  refresh(); scrollTo(0, 0);
+}
+addEventListener('hashchange', route);
+
+/* ---------- Home ---------- */
+const SLIDES = [
+  ['Summer Sale', 'Up to 50% Off', 'Big Deals. Better Prices.', '🛍️', 20, '#/products?deals=1'],
+  ['New Electronics', 'Latest technology at great prices', 'Discover products you\'ll love.', '🎧', 215, '#/products?cat=Electronics'],
+  ['Fashion Collection', 'Upgrade your style', 'Fresh looks for every season.', '👟', 340, '#/products?cat=Fashion'],
+  ['Home Essentials', 'Everything for your home', 'Make every room better.', '🍳', 150, '#/products?cat=Home%20%26%20Kitchen']
+];
+let heroT, heroI = 0;
+function hero() {
+  return `<section class="hero" aria-roledescription="carousel" aria-label="Promotions">${SLIDES.map((s, i) => `
+    <div class="slide ${i ? '' : 'on'}" style="background:linear-gradient(110deg,hsl(${s[4]},45%,14%) 35%,hsl(${s[4]},55%,38%))">
+      <div class="hemo" aria-hidden="true">${s[3]}</div>
+      <div class="htxt"><h3>${s[2]}</h3><h1>${s[0]}</h1><p>${s[1]}</p>
+      <a class="btn big" href="${s[5]}">Shop Now</a> <a class="btn big ghost" href="#/products?deals=1">Explore Deals</a></div></div>`).join('')}
+    <button class="hbtn hprev" data-act="slide" data-d="-1" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="hbtn hnext" data-act="slide" data-d="1" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="dots">${SLIDES.map((_, i) => `<button class="${i ? '' : 'on'}" data-act="slide" data-i="${i}" aria-label="Slide ${i + 1}"></button>`).join('')}</div></section>`;
+}
+function showSlide(i) {
+  heroI = (i + SLIDES.length) % SLIDES.length;
+  $$('.slide').forEach((s, k) => s.classList.toggle('on', k === heroI));
+  $$('.dots button').forEach((s, k) => s.classList.toggle('on', k === heroI));
+}
+let dealEnd = Date.now() + (5 * 3600 + 32 * 60 + 18) * 1000;
+setInterval(() => {
+  const el = $('#cd'); if (!el) return;
+  if (dealEnd < Date.now()) dealEnd = Date.now() + 6 * 3600e3;
+  const s = Math.floor((dealEnd - Date.now()) / 1000), p = n => String(n).padStart(2, '0');
+  el.textContent = `${p(Math.floor(s / 3600))}h ${p(Math.floor(s / 60) % 60)}m ${p(s % 60)}s`;
+}, 1000);
+
+function home() {
+  const deals = [...PRODUCTS].sort((a, b) => b.discount - a.discount).slice(0, 10);
+  const pop = [...PRODUCTS].sort((a, b) => b.reviews - a.reviews).slice(0, 8);
+  const rec = [...PRODUCTS].sort((a, b) => b.rating - a.rating).slice(0, 8);
+  const more = PRODUCTS.filter(p => !pop.includes(p)).slice(0, 8);
+  app.innerHTML = hero() +
+    section('Shop by Category', `<div class="cats">${CATS.map(c => `<a class="cat" href="#/products?cat=${encodeURIComponent(c.name)}">
+      <img src="${svgImg(c.emoji, c.hue, 300)}" alt="${c.name}" loading="lazy"><h3>${c.name}</h3><span>Shop Now</span></a>`).join('')}</div>`) +
+    section("Today's Deals", `<div class="hrow">${deals.map(card).join('')}</div>`, `<div class="timer">Deals end in: <b id="cd">05h 32m 18s</b></div>`) +
+    section('Popular Products', grid(pop), '<a class="btn ghost" href="#/products">See all</a>') +
+    section('Recommended for You', grid(rec)) +
+    `<div class="wrap"><div class="promo"><div><h2>Free delivery on orders over $50</h2><p>Join ShopHub today and unlock member-only deals.</p></div><a class="btn big" href="#/signup">Create your account</a></div></div>` +
+    section('More Products', grid(more));
+  heroT = setInterval(() => showSlide(heroI + 1), 5000);
+}
+
+/* ---------- Product listing, filters, search ---------- */
+let F = {};
+const brands = ['ShopHub', 'Apple', 'Samsung', 'Sony', 'Nike', 'Adidas', 'HP', 'Dell'];
+function filtered() {
+  const words = F.q.toLowerCase().split(/\s+/).filter(Boolean);
+  const [lo, hi] = F.price ? F.price.split('-').map(Number) : [0, 1e9];
+  const list = PRODUCTS.filter(p => {
+    const hay = [p.name, p.category, p.brand, p.description].join(' ').toLowerCase();
+    return words.every(w => hay.includes(w)) && (!F.cat || p.category === F.cat) && p.price >= lo && p.price < hi &&
+      p.rating >= F.rating && (!F.brands.length || F.brands.includes(p.brand)) && (!F.stock || p.stock) && p.discount >= F.disc;
+  });
+  const sorts = { low: (a, b) => a.price - b.price, high: (a, b) => b.price - a.price, rating: (a, b) => b.rating - a.rating, new: (a, b) => b.id - a.id };
+  return F.sort in sorts ? list.sort(sorts[F.sort]) : list;
+}
+function products(q) {
+  F = { q: q.get('q') || '', cat: q.get('cat') || '', price: '', rating: 0, brands: [], stock: false, disc: q.get('deals') ? 30 : 0, sort: 'featured' };
+  const radio = (name, items) => items.map(([v, l], i) => `<label><input type="radio" name="${name}" data-f="${name}" value="${v}" ${String(F[name]) === String(v) ? 'checked' : ''}> ${l}</label>`).join('');
+  app.innerHTML = `<div class="lay"><div><button class="btn dark ftog" data-act="ftog"><i class="fa-solid fa-filter"></i> Filters</button>
+    <form class="filters" id="filters" aria-label="Filters"><h4>Category</h4>${radio('cat', [['', 'All'], ...CATS.map(c => [c.name, c.name])])}
+    <h4>Price</h4>${radio('price', [['', 'Any'], ['0-50', '$0 – $50'], ['50-100', '$50 – $100'], ['100-250', '$100 – $250'], ['250-1000000', '$250+']])}
+    <h4>Customer Reviews</h4>${radio('rating', [[0, 'Any'], [5, '★★★★★ &amp; Up'], [4, '★★★★☆ &amp; Up'], [3, '★★★☆☆ &amp; Up']]).replace('value="5"', 'value="4.9"')}
+    <h4>Brand</h4>${brands.map(b => `<label><input type="checkbox" data-f="brand" value="${b}"> ${b}</label>`).join('')}
+    <h4>Availability</h4><label><input type="checkbox" data-f="stock"> In stock only</label>
+    <h4>Discount</h4>${radio('disc', [[0, 'Any'], [20, '20% off or more'], [30, '30% off or more'], [40, '40% off or more']])}
+    <button type="button" class="btn ghost" style="margin-top:14px;width:100%" data-act="fclr">Clear filters</button></form></div>
+    <section><div class="bar"><h2 id="res" aria-live="polite">Results</h2><label>Sort by: <select data-f="sort"><option value="featured">Featured</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option><option value="rating">Customer Rating</option><option value="new">Newest</option></select></label></div>
+    <div id="pgrid"></div></section></div>`;
+  drawGrid();
+}
+function drawGrid() {
+  const list = filtered();
+  $('#res').textContent = F.q ? `${list.length} results for '${F.q}'` : F.cat ? `${list.length} results in ${F.cat}` : `${list.length} Results`;
+  $('#pgrid').innerHTML = grid(list);
+}
+
+/* Search bar with suggestions + recent searches */
+function runSearch(term, cat) {
+  term = term.trim();
+  if (term) { searches = [term, ...searches.filter(s => s !== term)].slice(0, 5); store.set('searches', searches); }
+  $('#suggest').hidden = true;
+  location.hash = `#/products?q=${encodeURIComponent(term)}${cat ? '&cat=' + encodeURIComponent(cat) : ''}`;
+}
+function suggest() {
+  const v = $('#sq').value.trim().toLowerCase(), box = $('#suggest');
+  $('#sclr').hidden = !v;
+  let h = '';
+  if (!v) h = searches.length ? '<h6>Recent searches</h6>' + searches.map(s => `<a href="#/products?q=${encodeURIComponent(s)}" data-s="${esc(s)}"><i class="fa-solid fa-clock-rotate-left"></i>${esc(s)}</a>`).join('') : '';
+  else {
+    const m = PRODUCTS.filter(p => (p.name + p.brand + p.category).toLowerCase().includes(v)).slice(0, 5);
+    h = m.map(p => `<a href="#/product/${p.id}"><i class="fa-solid fa-magnifying-glass"></i>${esc(p.name)}</a>`).join('') ||
+      '<a href="#/products?q=' + encodeURIComponent(v) + '">Search for "' + esc(v) + '"</a>';
+  }
+  box.innerHTML = h; box.hidden = !h;
+}
+
+/* ---------- Product details & quick view ---------- */
+function productPage(p) {
+  recent = [p.id, ...recent.filter(i => i !== p.id)].slice(0, 8); store.set('recent', recent);
+  const opts = (name, arr) => arr.length ? `<b>${name}:</b><div class="opt">${arr.map((v, i) => `<label><input type="radio" name="${name}" value="${v}" ${i ? '' : 'checked'}>${v}</label>`).join('')}</div>` : '';
+  app.innerHTML = `<div class="wrap"><nav aria-label="Breadcrumb" style="padding-top:14px"><a href="#/">Home</a> › <a href="#/products?cat=${encodeURIComponent(p.category)}">${p.category}</a> › ${esc(p.name)}</nav>
+  <div class="pd"><div><div class="zoom"><img id="mainImg" src="${p.gallery[0]}" alt="${esc(p.name)}"></div>
+    <div class="thumbs">${p.gallery.map((g, i) => `<button class="${i ? '' : 'on'}" data-act="thumb" data-src="${g}" aria-label="Image ${i + 1}"><img src="${g}" alt=""></button>`).join('')}</div></div>
+  <div><h1>${esc(p.name)}</h1><div>${stars(p.rating)} <a href="#reviews" data-act="tab" data-t="reviews">${p.reviews.toLocaleString()} reviews</a> · Brand: ${p.brand}</div>
+    <div class="pr">${money(p.price)} <s style="font-size:16px;color:var(--mut)">${money(p.oldPrice)}</s> <span class="badge" style="position:static">${p.discount}% OFF</span></div>
+    <p>${p.description}</p>${opts('Color', p.colors)}${opts('Size', p.sizes)}
+    <p><b>Quantity:</b> <span class="qty"><button data-act="q" data-d="-1" aria-label="Decrease">−</button><input id="qty" value="1" readonly aria-label="Quantity"><button data-act="q" data-d="1" aria-label="Increase">+</button></span></p>
+    <p class="${p.stock ? 'in' : 'out'}">${p.stock ? (p.stock < 10 ? `Only ${p.stock} left in stock` : 'In Stock') : 'Out of Stock'}</p>
+    <p class="fast"><i class="fa-solid fa-truck-fast"></i> Fast Delivery to Pakistan · Arrives in 3–5 days · 30-day returns</p>
+    <div class="acts"><button class="btn big" data-act="addp" data-id="${p.id}" ${p.stock ? '' : 'disabled'}>Add to Cart</button><button class="btn big dark" data-act="buyp" data-id="${p.id}" ${p.stock ? '' : 'disabled'}>Buy Now</button><button class="btn big ghost" data-act="wish" data-id="${p.id}"><i class="fa-solid fa-heart"></i> Add to Wishlist</button></div></div></div>
+  <div class="tabs"><div class="tabh" role="tablist">${[['details', 'Product Details'], ['specs', 'Specifications'], ['reviews', 'Customer Reviews'], ['qa', 'Questions & Answers']].map(([k, l], i) => `<button role="tab" class="${i ? '' : 'on'}" data-act="tab" data-t="${k}">${l}</button>`).join('')}</div>
+    <div class="tabc" id="tabc"></div></div>
+  ${section('Customers also viewed', grid(PRODUCTS.filter(x => x.category === p.category && x.id !== p.id).slice(0, 4)))}</div>`;
+  showTab('details', p);
+}
+function showTab(t, p = byId(location.hash.split('/')[2])) {
+  $$('.tabh button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  const c = {
+    details: `<p>${p.description}</p><ul><li>Authentic ${p.brand} quality</li><li>1-year ShopHub warranty</li><li>Free returns within 30 days</li></ul>`,
+    specs: `<table>${[['Brand', p.brand], ['Category', p.category], ['Model', 'SH-' + String(p.id).padStart(4, '0')], ['Colors', p.colors.join(', ') || 'N/A'], ['Rating', p.rating + ' / 5'], ['Warranty', '1 year']].map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>`,
+    reviews: [['Ayesha K.', 5, 'Excellent quality and fast delivery. Highly recommended!'], ['Bilal R.', 4, 'Good value for the price. Packaging could be better.'], ['Sara M.', 5, 'Exactly as described. Will buy again.']].map(r => `<p><b>${r[0]}</b> ${stars(r[1])}<br>${r[2]}</p>`).join(''),
+    qa: '<p><b>Q:</b> Does it come with a warranty?<br><b>A:</b> Yes, a 1-year ShopHub warranty is included.</p><p><b>Q:</b> Is cash on delivery available?<br><b>A:</b> Yes, at checkout.</p>'
+  };
+  $('#tabc').innerHTML = c[t];
+}
+function quickView(id) {
+  const p = byId(id), m = $('#modal');
+  m.innerHTML = `<div><button class="ib x" data-act="close" aria-label="Close">✕</button><img src="${p.image}" alt="${esc(p.name)}" style="border-radius:10px">
+    <div><h2>${esc(p.name)}</h2><p>${stars(p.rating)} (${p.reviews.toLocaleString()})</p><p class="price"><b>${money(p.price)}</b> <s>${money(p.oldPrice)}</s></p><p>${p.description}</p>
+    <div class="acts"><button class="btn" data-act="add" data-id="${p.id}">Add to Cart</button><a class="btn dark" href="#/product/${p.id}" data-act="close">Full details</a></div></div></div>`;
+  m.hidden = false; $('.x', m).focus();
+}
+
+/* ---------- Cart & wishlist pages ---------- */
+function cartPage() {
+  if (!cart.length) return app.innerHTML = emptyBox('fa-cart-shopping', 'Your cart is empty.', 'Add something you love.', '<a class="btn" href="#/products">Start shopping</a>');
+  app.innerHTML = `<div class="wrap two"><section class="box"><h1>Shopping Cart</h1>${cart.map(i => { const p = byId(i.id); return `<div class="crow">
+    <a href="#/product/${p.id}"><img src="${p.image}" alt="${esc(p.name)}"></a>
+    <div><a class="title" href="#/product/${p.id}">${esc(p.name)}</a><div class="in">In Stock</div><div class="qty"><button data-act="dec" data-id="${p.id}" aria-label="Decrease">−</button><span>${i.qty}</span><button data-act="inc" data-id="${p.id}" aria-label="Increase">+</button></div><p>
+      <button class="lnk" data-act="rm" data-id="${p.id}">Remove</button><button class="lnk" data-act="save" data-id="${p.id}">Save for later</button></p></div>
+    <b>${money(p.price * i.qty)}</b></div>`; }).join('')}</section>
+    ${summary(totals(), '<a class="btn big" style="width:100%;margin-top:12px" href="#/checkout">Proceed to Checkout</a>')}</div>`;
+}
+function wishlist() {
+  app.innerHTML = `<div class="wrap sec"><h1>Your Wishlist</h1>${wish.length ? '<br><div class="grid">' + wish.map(id => { const p = byId(id); return card(p).replace('Add to Cart', 'Move to Cart').replace('data-act="add"', 'data-act="mv"'); }).join('') + '</div>' : emptyBox('fa-heart', 'Your wishlist is empty.', 'Tap the heart on any product to save it.', '<a class="btn" href="#/products">Start shopping</a>')}</div>`;
+}
+
+/* ---------- Checkout ---------- */
+let ck = { step: 1, addr: store.get('addr', {}), ship: 'std', pay: 'card', done: null };
+const field = (id, label, type = 'text', extra = '', cls = '') => `<div class="f ${cls}"><label for="${id}">${label}</label><input id="${id}" name="${id}" type="${type}" required placeholder=" " value="${esc(ck.addr[id] || '')}" ${extra}></div>`;
+function checkout() {
+  if (ck.done) { const o = ck.done; ck = { ...ck, step: 1, done: null };
+    return app.innerHTML = `<div class="wrap"><div class="box ok" style="margin:20px 0"><i class="fa-solid fa-circle-check"></i><h1>Order Successfully Placed!</h1><p>Your order number is <b>${o.id}</b>. A confirmation has been sent to you.</p><a class="btn" href="#/account?tab=orders">View orders</a> <a class="btn ghost" href="#/">Continue shopping</a></div></div>`; }
+  if (!cart.length) return app.innerHTML = emptyBox('fa-cart-shopping', 'Your cart is empty.', 'Add items before checking out.', '<a class="btn" href="#/products">Start shopping</a>');
+  const t = totals(ck.ship === 'exp'), s = ck.step;
+  const radio = (n, v, l, sub = '') => `<label><input type="radio" name="${n}" value="${v}" ${ck[n] === v ? 'checked' : ''}><span><b>${l}</b><br><small style="color:var(--mut)">${sub}</small></span></label>`;
+  const steps = ['Shipping Address', 'Delivery Method', 'Payment Method', 'Order Review'];
+  const body = [`<div class="fg">${field('name', 'Full Name', 'text', 'autocomplete="name"')}${field('phone', 'Phone Number', 'tel', 'pattern="[0-9+ \\-]{7,15}" autocomplete="tel"')}
+      <div class="f"><label for="country">Country</label><select id="country"><option>Pakistan</option><option>United States</option><option>United Kingdom</option><option>UAE</option></select></div>${field('city', 'City')}${field('address', 'Address', 'text', '', 'full')}${field('zip', 'Postal Code', 'text', 'pattern="[A-Za-z0-9 \\-]{3,10}"')}</div>`,
+    `<div class="opts">${radio('ship', 'std', 'Standard Delivery', '3–5 business days · Free over $50')}${radio('ship', 'exp', 'Express Delivery', '1–2 business days · +$9.99')}</div>`,
+    `<div class="opts">${radio('pay', 'card', 'Credit / Debit Card', 'Demo only – no card details are collected')}${radio('pay', 'cod', 'Cash on Delivery')}${radio('pay', 'paypal', 'PayPal')}${radio('pay', 'other', 'Other (bank transfer / wallet)')}</div>`,
+    `<p><b>Ship to:</b> ${esc(ck.addr.name)}, ${esc(ck.addr.address)}, ${esc(ck.addr.city)} ${esc(ck.addr.zip)}, ${esc(ck.addr.country)}</p><p><b>Delivery:</b> ${ck.ship === 'exp' ? 'Express' : 'Standard'} · <b>Payment:</b> ${ck.pay.toUpperCase()}</p>
+     ${cart.map(i => `<div class="ln" style="display:flex;justify-content:space-between;padding:6px 0"><span>${esc(byId(i.id).name)} × ${i.qty}</span><b>${money(byId(i.id).price * i.qty)}</b></div>`).join('')}`][s - 1];
+  app.innerHTML = `<div class="wrap two"><form class="box" id="ckform" novalidate><div class="steps">${steps.map((l, i) => `<span class="${i + 1 <= s ? 'on' : ''}">${i + 1}. ${l}</span>`).join('')}</div>
+    <h2 style="margin-bottom:14px">${steps[s - 1]}</h2>${body}<div class="acts">${s > 1 ? '<button type="button" class="btn ghost" data-act="back">Back</button>' : ''}<button class="btn big">${s === 4 ? 'Place Order' : 'Continue'}</button></div></form>${summary(t, '')}</div>`;
+  if (s === 1) $('#country').value = ck.addr.country || 'Pakistan';
+}
+
+/* ---------- Auth & account ---------- */
+function auth(mode) {
+  const login = mode === 'login';
+  app.innerHTML = `<div class="wrap"><form class="box auth" id="${mode}Form" novalidate><h1>${login ? 'Sign in' : 'Create your ShopHub account'}</h1>
+    ${login ? '' : '<div class="f"><label for="an">Full Name</label><input id="an" required autocomplete="name"></div>'}
+    <div class="f"><label for="ae">Email</label><input id="ae" type="email" required autocomplete="email"></div>
+    <div class="f"><label for="ap">Password</label><input id="ap" type="password" required minlength="6" autocomplete="${login ? 'current' : 'new'}-password"></div>
+    ${login ? '<label><input type="checkbox" id="rm"> Remember me</label> · <a href="#" data-act="forgot">Forgot password?</a>' : '<div class="f"><label for="ac">Confirm Password</label><input id="ac" type="password" required></div>'}
+    <p class="err" id="err" role="alert"></p><button class="btn big" style="width:100%">${login ? 'Sign In' : 'Create account'}</button>
+    <p style="margin-top:14px">${login ? 'New to ShopHub? <a href="#/signup"><b>Create your account</b></a>' : 'Already a member? <a href="#/login"><b>Sign in</b></a>'}</p></form></div>`;
+}
+function seedOrders(email) {
+  if (orders.some(o => o.email === email)) return;
+  const mk = (n, d, st, ids) => ({ id: 'SH-' + n, email, date: new Date(Date.now() - d * 864e5).toISOString(), status: st, items: ids.map(id => ({ id, qty: 1, price: byId(id).price })), total: ids.reduce((s, id) => s + byId(id).price, 0) * 1.08 });
+  orders.push(mk(482913, 20, 'Delivered', [1, 14]), mk(551207, 6, 'Shipped', [17]), mk(603318, 40, 'Cancelled', [4]));
+  store.set('orders', orders);
+}
+function account(q) {
+  if (!user) return location.hash = '#/login';
+  seedOrders(user.email);
+  const tab = q.get('tab') || 'orders';
+  const tabs = [['orders', 'Your Orders'], ['wishlist', 'Your Wishlist'], ['addresses', 'Your Addresses'], ['payments', 'Payment Methods'], ['settings', 'Account Settings'], ['recent', 'Recently Viewed Products']];
+  const mine = orders.filter(o => o.email === user.email).sort((a, b) => b.date.localeCompare(a.date));
+  const views = {
+    orders: mine.length ? mine.map(o => `<div class="ord"><header><span>Order <b>${o.id}</b></span><span>${new Date(o.date).toLocaleDateString()}</span><span>Total <b>${money(o.total)}</b></span><span class="st ${o.status}">${o.status}</span></header>
+      ${o.items.map(i => `<div class="ln"><img src="${byId(i.id).image}" alt=""><a href="#/product/${i.id}">${esc(byId(i.id).name)}</a> × ${i.qty}</div>`).join('')}</div>`).join('') : '<p>No orders yet.</p>',
+    wishlist: `<p>${wish.length} item(s) saved.</p><a class="btn" href="#/wishlist">Open wishlist</a>`,
+    addresses: ck.addr.address ? `<p><b>${esc(ck.addr.name)}</b><br>${esc(ck.addr.address)}, ${esc(ck.addr.city)} ${esc(ck.addr.zip)}<br>${esc(ck.addr.country)} · ${esc(ck.addr.phone)}</p>` : '<p>No saved addresses. One is saved when you check out.</p>',
+    payments: '<p>For your security, this demo never collects or stores card details.</p>',
+    settings: `<form id="setForm" class="f" style="max-width:380px"><label for="sn">Full Name</label><input id="sn" value="${esc(user.name)}" required><br><br><button class="btn">Save changes</button></form>`,
+    recent: recent.length ? grid(recent.map(byId)) : '<p>No recently viewed products.</p>'
+  };
+  app.innerHTML = `<div class="wrap acc"><nav aria-label="Account"><h2 style="margin:0 0 10px">Hello, ${esc(user.name)}</h2>${tabs.map(([k, l]) => `<a class="${k === tab ? 'on' : ''}" href="#/account?tab=${k}">${l}</a>`).join('')}<a href="#" data-act="logout">Logout</a></nav>
+    <section class="box"><h1 style="margin-bottom:14px">${tabs.find(t => t[0] === tab)?.[1]}</h1>${views[tab] || views.orders}</section></div>`;
+}
+
+/* ---------- Customer service / info pages ---------- */
+function service(q) {
+  const t = q.get('t') || 'Customer Service';
+  const items = [['fa-box', 'Your Orders', '#/account?tab=orders', 'Track, return or buy again'], ['fa-rotate-left', 'Returns', '#/service?t=Returns', '30-day easy returns'], ['fa-truck', 'Shipping Information', '#/service?t=Shipping%20Information', 'Rates and delivery times'], ['fa-user-shield', 'Account Settings', '#/account?tab=settings', 'Manage your profile'], ['fa-headset', 'Contact Us', '#/service?t=Contact%20Us', 'We are here 24/7'], ['fa-circle-question', 'Help Center', '#/service?t=Help%20Center', 'Answers to common questions']];
+  app.innerHTML = `<div class="wrap sec"><h1 style="margin-bottom:6px">${esc(t)}</h1><p style="color:var(--mut)">${t === 'Customer Service' ? 'How can we help you today?' : 'This is a demo page for ShopHub – content coming soon.'}</p><br>
+    <div class="svc">${items.map(i => `<a href="${i[2]}"><i class="fa-solid ${i[0]}"></i><h3>${i[1]}</h3><p>${i[3]}</p></a>`).join('')}</div><br>
+    <form class="box f" id="contactForm" style="max-width:520px"><h3 style="margin-bottom:10px">Contact us</h3><label for="cm">Your message</label><textarea id="cm" rows="4" required></textarea><br><br><button class="btn">Send message</button></form></div>`;
+}
+
+/* ---------- Event delegation ---------- */
+const actions = {
+  menu: () => toggleMenu(),
+  sub: t => { const m = t.parentElement; m.classList.toggle('open'); t.setAttribute('aria-expanded', m.classList.contains('open')); },
+  add: (t, id) => addCart(id),
+  mv: (t, id) => { wish = wish.filter(i => i !== id); store.set('wish', wish); addCart(id); wishlist(); },
+  buy: (t, id) => { addCart(id, 1, true); location.hash = '#/checkout'; },
+  addp: (t, id) => addCart(id, +$('#qty').value),
+  buyp: (t, id) => { addCart(id, +$('#qty').value, true); location.hash = '#/checkout'; },
+  wish: (t, id) => toggleWish(id),
+  qv: (t, id) => quickView(id),
+  close: () => { $('#modal').hidden = true; },
+  q: t => { const i = $('#qty'); i.value = Math.max(1, Math.min(10, +i.value + +t.dataset.d)); },
+  thumb: t => { $('#mainImg').src = t.dataset.src; $$('.thumbs button').forEach(b => b.classList.toggle('on', b === t)); },
+  tab: (t, id, e) => { e.preventDefault(); showTab(t.dataset.t); },
+  slide: t => { clearInterval(heroT); showSlide(t.dataset.i !== undefined ? +t.dataset.i : heroI + +t.dataset.d); },
+  inc: (t, id) => { const i = cart.find(c => c.id === id); i.qty = Math.min(byId(id).stock, i.qty + 1); saveCart(); cartPage(); },
+  dec: (t, id) => { const i = cart.find(c => c.id === id); i.qty = Math.max(1, i.qty - 1); saveCart(); cartPage(); },
+  rm: (t, id) => { cart = cart.filter(c => c.id !== id); saveCart(); toast('Removed from cart'); cartPage(); },
+  save: (t, id) => { cart = cart.filter(c => c.id !== id); if (!wish.includes(id)) wish.push(id); store.set('wish', wish); saveCart(); toast('Saved for later (in your wishlist)'); cartPage(); },
+  back: () => { ck.step--; checkout(); },
+  ftog: () => $('#filters').classList.toggle('show'),
+  fclr: () => products(new URLSearchParams()),
+  forgot: (t, id, e) => { e.preventDefault(); toast('Demo: password reset link sent!'); },
+  logout: (t, id, e) => { e.preventDefault(); user = null; store.set('user', null); toast('Signed out'); location.hash = '#/'; refresh(); }
+};
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-act]');
+  if (t) { const id = +t.dataset.id || t.dataset.id; actions[t.dataset.act]?.(t, id, e); }
+  const s = e.target.closest('[data-s]'); if (s) runSearch(s.dataset.s);
+  if (!e.target.closest('.search')) $('#suggest').hidden = true;
+  if (e.target.id === 'modal') $('#modal').hidden = true;
+  if (e.target.closest('#suggest a')) $('#suggest').hidden = true;
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { $('#modal').hidden = true; toggleMenu(false); $('#suggest').hidden = true; } });
+
+/* Filters (change events) */
+document.addEventListener('change', e => {
+  const f = e.target.dataset.f; if (!f) return;
+  if (f === 'brand') F.brands = $$('[data-f=brand]:checked').map(i => i.value);
+  else if (f === 'stock') F.stock = e.target.checked;
+  else if (f === 'rating' || f === 'disc') F[f] = +e.target.value;
+  else F[f] = e.target.value;
+  drawGrid();
+});
+/* Checkout radios persist */
+document.addEventListener('change', e => { if (e.target.name === 'ship' || e.target.name === 'pay') ck[e.target.name] = e.target.value; if (e.target.name === 'ship') { const t = totals(ck.ship === 'exp'); $('.sum').outerHTML = summary(t, ''); } });
+
+/* Search bar events */
+$('#sf').addEventListener('submit', e => { e.preventDefault(); runSearch($('#sq').value, $('#scat').value); });
+$('#sq').addEventListener('input', suggest); $('#sq').addEventListener('focus', suggest);
+$('#sclr').addEventListener('click', () => { $('#sq').value = ''; suggest(); $('#sq').focus(); if (location.hash.includes('q=')) location.hash = '#/products'; });
+$('#lang').addEventListener('change', () => toast('Language preview only in this demo'));
+
+/* Forms (login, signup, checkout, settings, contact) */
+document.addEventListener('submit', e => {
+  const f = e.target, id = f.id; if (!id || id === 'sf') return;
+  e.preventDefault();
+  const err = m => { const el = $('#err'); if (el) el.textContent = m; return false; };
+  const users = store.get('users', []);
+  if (id === 'signupForm') {
+    const [n, em, pw, cf] = ['an', 'ae', 'ap', 'ac'].map(i => $('#' + i).value.trim());
+    if (n.length < 2) return err('Please enter your full name.');
+    if (!/^\S+@\S+\.\S+$/.test(em)) return err('Enter a valid email address.');
+    if (pw.length < 6) return err('Password must be at least 6 characters.');
+    if (pw !== cf) return err('Passwords do not match.');
+    if (users.some(u => u.email === em.toLowerCase())) return err('An account with this email already exists.');
+    users.push({ name: n, email: em.toLowerCase(), pw }); store.set('users', users);
+    user = { name: n, email: em.toLowerCase() }; store.set('user', user); toast('Welcome to ShopHub!'); location.hash = '#/account';
+  } else if (id === 'loginForm') {
+    const em = $('#ae').value.trim().toLowerCase(), pw = $('#ap').value;
+    if (!/^\S+@\S+\.\S+$/.test(em)) return err('Enter a valid email address.');
+    const u = users.find(x => x.email === em && x.pw === pw);
+    if (!u) return err('Incorrect email or password. (Demo: sign up first.)');
+    user = { name: u.name, email: u.email }; store.set('user', user); toast('Signed in!'); location.hash = '#/account';
+  } else if (id === 'ckform') {
+    if (!f.reportValidity()) return;
+    if (ck.step === 1) { ck.addr = Object.fromEntries(['name', 'phone', 'country', 'city', 'address', 'zip'].map(k => [k, $('#' + k).value.trim()])); store.set('addr', ck.addr); }
+    if (ck.step < 4) { ck.step++; return checkout(); }
+    const t = totals(ck.ship === 'exp');
+    const o = { id: 'SH-' + Math.floor(100000 + Math.random() * 900000), email: user?.email || 'guest', date: new Date().toISOString(), status: 'Processing', items: cart.map(i => ({ id: i.id, qty: i.qty, price: byId(i.id).price })), total: t.total };
+    orders.push(o); store.set('orders', orders); cart = []; saveCart(); ck.done = o; checkout();
+  } else if (id === 'setForm') { user.name = $('#sn').value.trim() || user.name; store.set('user', user); const us = users.map(u => u.email === user.email ? { ...u, name: user.name } : u); store.set('users', us); toast('Account updated'); refresh(); account(new URLSearchParams('tab=settings')); }
+  else if (id === 'contactForm') { f.reset(); toast('Message sent. We will reply soon!'); }
+});
+
+/* ---------- Init ---------- */
+buildSide(); route();
+
+</script>
 </body>
 </html>
